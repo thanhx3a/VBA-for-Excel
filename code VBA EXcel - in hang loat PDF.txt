@@ -1,0 +1,37 @@
+👉 Tư duy Giải quyết bằng tay (mất 7 ngày mới có kết quả):
+Bước 1: Mỗi lần thay đổi số thứ tự (định danh của khách) thì do công thức trong sheet báo cáo, nó sẽ cho kết quả nội dung tương ứng của khách hàng đó lấy từ sheet dữ liệu gốc.
+Bước 2: xuất sheet báo cáo thành file pdf cho khách hàng đó với tên file: "Số seri_Chứng nhận số" là 2 mục có trong nội dung của báo cáo.
+Bước 3: lặp lại bước 2 và bước 3 cho từng khách hàng khác đến khách hàng cuối cùng.
+
+
+Sub InHangLoatpdf()
+'------------ 
+' Dat ten bien
+'-----------
+   Dim str_tenfile As String
+   Dim str_duongdan As String
+   Dim Int_batdau As Integer
+   Dim Int_ketthuc As Integer
+   Dim Int_i As Integer
+       Int_batdau = Range("BU2").Value 
+        Int_ketthuc = Range("BV2").Value
+' Lấy duong dẫn lưu file pdf là cùng đường dẫn file báo cáo.
+        str_duongdan = ActiveWorkbook.Path
+        str_duongdan = str_duongdan & "\"
+   ' Cho biến i chạy từ số khách hàng đầu đến số khách hàng cuối     
+    For Int_i = Int_batdau To Int_ketthuc
+'------------
+' THay giá trị ô khách hàng đầu bằng biến i (biến i sẽ  tự tăng lên 1 đơn vị sau 1 vòng lặp)
+'----------
+            Range("BU2").Value = Int_i
+'--------
+' Gán biến tên file = đường dãn hiện tại và "Số seri_Chứng nhận số"
+'-------
+      str_tenfile = str_duongdan & Range("N14").Value & "_" & Range("BA5").Value & "_" & Int_i
+' Xuất thành file pdf
+            ActiveSheet.ExportAsFixedFormat Type:=xlTypePDF, Filename:=str_tenfile _
+                , Quality:=xlQualityStandard, IncludeDocProperties:=True, IgnorePrintAreas _
+                :=False, OpenAfterPublish:=False
+    
+    Next Int_i
+End Sub
